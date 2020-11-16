@@ -17,13 +17,8 @@ exports.getAll = Model => async (req, res) => {
 
 exports.getOne = Model => async (req, res) => {
 
-  // Obtener el nombre del parametro (el id del recurso. ejemplo: "ownerId")
-  const idKey = Object.keys(req.params)[0];
-  // Obtener el valor de ese parametro (ejemplo: "1")
-  const idValue = req.params[idKey];
-
   try {
-    const record = await Model.findOne({ where: { id: idValue } });
+    const record = await Model.findOne({ where: { id: req.resourceID } });
 
     if(!record){
       return res.status(404).json({
@@ -44,10 +39,6 @@ exports.getOne = Model => async (req, res) => {
 }
 
 exports.updateOne = Model => async (req, res) => {
-  // Obtener el nombre del parametro (el id del recurso. ejemplo: "ownerId")
-  const idKey = Object.keys(req.params)[0];
-  // Obtener el valor de ese parametro (ejemplo: "1")
-  const idValue = req.params[idKey];
 
   const fields = Object.keys(req.body);
 
@@ -59,7 +50,7 @@ exports.updateOne = Model => async (req, res) => {
       fields: fields
     });
 
-    const updatedRecord = await Model.findOne({ where: { id: idValue } });
+    const updatedRecord = await Model.findOne({ where: { id: req.resourceID } });
 
     res.status(200).json({
       status: 'success',

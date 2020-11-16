@@ -4,6 +4,11 @@ const debtRouter = require('./debtRoutes');
 
 const router = express.Router();
 
+router.param('ownerId', (req, res, next, id) => {
+  req.resourceID = id;
+  next();
+});
+
 router.use('/:ownerId/debts', debtRouter);
 
 router
