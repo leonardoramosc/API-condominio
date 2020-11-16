@@ -15,6 +15,24 @@ exports.getAll = Model => async (req, res) => {
   }
 }
 
+exports.deleteOne = Model => async (req, res) => {
+
+  try {
+    await Model.destroy({
+      where: {
+        id: req.resourceID
+      }
+    });
+
+    res.status(204).json({
+      status: 'success',
+      msg: 'Object deleted successfully'
+    });
+  } catch(err){
+    internalHandler(err, res);
+  }
+}
+
 exports.getOne = Model => async (req, res) => {
 
   try {

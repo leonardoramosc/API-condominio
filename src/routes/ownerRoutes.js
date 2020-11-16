@@ -19,7 +19,8 @@ router
 router
   .route('/:ownerId')
   .get(ownerController.getOneOwner)
-  .patch(ownerController.updateOneOwner);
+  .patch(ownerController.updateOneOwner)
+  .delete(ownerController.deleteOneOwner);
 
 module.exports = router;
 

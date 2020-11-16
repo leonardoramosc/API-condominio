@@ -16,6 +16,7 @@ router
 router
   .route('/:billId')
   .get(billController.getOneBill)
-  .patch(billController.updateOneBill);
+  .patch(billController.updateOneBill)
+  .delete(billController.deleteOneBill);
 
 module.exports = router;
