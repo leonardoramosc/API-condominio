@@ -1,8 +1,13 @@
 const { internalHandler } = require('../utils/errorHandler');
 
-exports.getAll = Model => async (req, res) => {
+exports.getAll = (Model, options) => async (req, res) => {
+  const queryOptions = options ? options : {};
+  queryOptions.where = {}
+
+  if(req.params.ownerId) queryOptions.where.id = req.params.ownerId;
+  
   try {
-    const records = await Model.findAll();
+    const records = await Model.findAll(queryOptions);
 
     res.status(200).json({
       status: 'success',

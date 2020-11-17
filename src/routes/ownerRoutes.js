@@ -9,7 +9,7 @@ router.param('ownerId', (req, res, next, id) => {
   next();
 });
 
-router.use('/:ownerId/debts', debtRouter);
+//router.use('/:ownerId/debts', debtRouter);
 
 router
   .route('/')
@@ -17,10 +17,18 @@ router
   .post(ownerController.createOwner);
 
 router
+  .route('/deudas')
+  .get(ownerController.getAllOwnersDebts);
+
+router
   .route('/:ownerId')
   .get(ownerController.getOneOwner)
   .patch(ownerController.updateOneOwner)
   .delete(ownerController.deleteOneOwner);
+
+router
+  .route('/:ownerId/deudas')
+  .get(ownerController.getAllOwnersDebts);
 
 module.exports = router;
 

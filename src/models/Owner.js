@@ -24,7 +24,7 @@ const owner = (sequelize, DataTypes) => {
     });
     
     Owner.associate = (models) => {
-        Owner.belongsToMany(models.Bill, { through: models.Debt });
+        Owner.hasMany(models.Debt, {hooks: true});
     }
 
     return Owner;

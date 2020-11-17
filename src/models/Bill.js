@@ -1,4 +1,4 @@
-const bill = (sequelize, DataTypes) => {
+const bill = (sequelize, DataTypes, models) => {
   const Bill = sequelize.define('Bill', {
     fecha: {
       type: DataTypes.DATEONLY,
@@ -12,12 +12,24 @@ const bill = (sequelize, DataTypes) => {
   }, {
     freezeTableName: true,
     tableName: 'recibos',
-    timestamps: false
+    timestamps: false,
+    hooks: {
+      async afterCreate(newBill){
+        // obtener todos los propietarios
+        const owners = await models.Owner.findAll();
+        const months = [
+          "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", 
+          "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+        ];
+        
+        // insertar en deudas, a cada uno de los propietarios, el nuevo monto del recibo creado
+        const concepto = `Relacion ${months[newBill.fecha.getMonth()]} ${newBill.fecha.getFullYear()}`;
+        owners.forEach(async owner => {
+          await models.Debt.create({monto: newBill.monto, concepto, OwnerId: owner.id});
+        })
+      }
+    }
   });
-
-  Bill.associate = (models) => {
-    Bill.belongsToMany(models.Owner, { through: models.Debt });
-  }
 
   return Bill;
 }
